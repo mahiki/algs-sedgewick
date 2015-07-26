@@ -1,0 +1,548 @@
+Paper notes from Algs I and Algs II, Sedgewick
+11/1/2014, put in evernote
+
+
+Knuth Shuffle
+can we shuffle faster than sorting random numbers?
+
+  increment i
+  random integer from 0 to i
+  swap that index with i
+
+this takes linear time!
+
+* shuffle swap 0 to i, or do it i to N-1
+  0 to N-1 is a BUG!
+
+Application: computational geometry, "Convex Hull"
+  several neat applications
+
+Graham Scan
+choose lowest y-point p
+sort by polar angle for p
+discard the points unless they create a CCW turn
+the CCW turn is for each point
+
+(implementation at 12:57 of Convex Hull lecture)
+
+Implementation
+2D array of the sort
+pushdown stack (pop the point if not a CCW turn)
+
+NlogN sorting, linear for the rest
+
+Merge Sort
+1 of two classics
+Recursive implementation / Non-Recursive implementation
+
+*Don't use assertions for checking inputs
+
+public class Merge{
+ (see slides)
+make sure auxiliary array is created in the actual sort w/ one argument
+if you create the aux array in the recursive routine it becomes expensive array creation.
+
+*study the _trace_ to understand the recursive implmn
+
+Memory
+in place sorts use memory <= ClogN
+Insertion Sort, Shell Sort, Selection Sort
+
+out-of-place sort
+Mergesort needs the auxiliary array to merge
+
+Mergesort bottom-up (Non-recursive)
+series of doubling
+1+2+4+8+...+2N = log N          as N-> infinity
+
+"This is an industrial strength implementation, sort any size array for NlogN"
+
+
+Sorting Complexity
+Any compare-based sorting algorithm needs at least Log N! compares in worst case
+*   Log N! ~ N log N
+
+So mergesort is an optimal algorithm, not optimal for memory usage.
+
+Also, the state of the input keys makes a difference.  Pre-sorted, partially sorted, etc. can help us do better.
+
+
+Comparators
+remember the comparable interface, used for the natural ordering
+* Comparable Interface
+
+Comparator interface is sorting using different orders.  Spanish sort, case insensitive, etc.
+create a comparator object. changes to interface in order to use Comparator.
+Looks complicated, but the implementation supports polar or other comparisons.
+
+
+Stability
+previous sort result holds when sorting on another key.
+
+Insertion Sort, Mergesort are stable.
+Selection Sort and Shell Sort not stable.
+
+* less than / less than or equal is the telltale flag.
+
+Exams always ask: is this implementation of sort stable?
+If equal keys are never moved past each other in the implementation, it will be stable.
+
+Selection Sort - long distance exchanges move keys past other equal keys.
+Shell Sort - long distance exchanges past other equal keys.
+Merge Sort is stable depending on the coding - check the merge operation
+Quicksort is not stable.
+
+L3
+Quicksort
+*get a quicksort t-shirt
+see code in slides
+partitioning code
+quicksort is recursive
+
+*trace will help you understand the algorithm
+
+Quicksort partitions in place, less memory usage than mergesort.
+
+**must be randomized to gaurantee performance!
+**many textbook implementations go N^2 quadratic if array is sorted or reverse sorted
+
+Improvements
+small subarrays use insertion sort ~10 items
+leave recursion unsorted and hit one pass insertion sort at the end
+estimate partition element near middle of range
+
+Selection Sort
+given sorted list - easy.
+Quicksort will give time ~ N if already sorted
+Quicksort takes linear time on average, N^2 in worst case.
+
+Duplicate Keys
+Mergesort always 1/2 N log N to N log N compares
+Quicksort quadratic unless partitioning stops on equal keys
+  fix: stop scans on items equal to ...
+
+*fun
+*3-way quicksort  java.util.Arrays.sort()
+implements comparable
+can supply your own order of objects
+But... java library crashes if you give it certain input, no shuffling.
+stackoverflow entry for this
+
+** Sorting summary chart in slides
+
+
+L4 APIs and Elementary Implementations
+
+Priority Queues
+remove the largest or smalles item
+look at API
+Generic and Comparable
+Constructor (optional array implementation)
+
+Applications are many
+Not enough memory to store N items, keep the ones that are the biggest (transaction amounts, time intervals, etc)
+Elementary PQ is time MN, space M.  MxN is huge
+
+
+Binary Heaps
+ingenious and simple data structure to run a Priority Queue
+Height of complete tree with N nodes is log N
+(N, divided by 2, until divisors all 1 or 2.  2^X = N)
+
+Heap ordering
+largest key is a[1], the root of the tree
+indices get you through the tree
+integer parent of k is at k/2
+children of node k = 2k, 2k + 1
+
+that's the Invariant.
+*general rule for data structure design:
+*To design the algorithm, try breaking the invariant and see what it takes to fix it.
+
+Exchange key with parent
+Repeat until heap order is restored
+
+Binary Heap Priority Queue
+Insert      log N
+delete Max  log N
+find Max    1   (its the array index [1])
+
+Fibonnacci Heap can
+Insert      Constant time
+delete Max  log N average
+
+**Use immutable keys!!
+underflow and overflow exceptions to watch:
+  delete empty PQ
+  resizing Array
+
+
+Immutable Data Type
+1.  private final
+2.  defensive copy
+
+
+Heap Sort
+create a max heap
+repeatedly remove minimum
+
+Create Array
+bottom up method, 1st node up, check heaps and exchange
+sink/swim
+
+when it is max heap, swim root to the bottom and delete the largest item (from the end)
+
+N exchanges and sync will pull sorted array
+
+*one-liner code for first pass.  SEE VISUALIZATION
+
+secod pass see slides
+complete heap sort
+
+
+Heap Sort
+heap <= 2N compares and exchanges
+     <= 2N log N compares and exchanges
+
+In-place (low memory)
+N log N worst case
+and its simple!
+
+**
+"what's an in-place algorithm that is N log N?"
+
+But - not used much
+  inner loop longer than quicksort
+  poor use of cache memory, lots of references to memory all over.
+  NOT STABLE
+
+Full summary of sorting algorithms in slides
+
+
+Event Driven Simulation
+Application of Priority Queues
+*cool!
+"Simulate motion of N moving particles with elastic collisions"
+
+*Good OOP design example!
+
+ball collisions
+focus only on collisions occuring soon
+maintain a PQ of collision events by time
+resolve velocity changes at collision
+re-order the queue
+
+
+L4.2
+Symbol Table
+"Dictionary"
+key-value pair abstraction
+insert value and key
+given a key, search for value
+
+Associative Array abstraction
+
+API (see slide)
+
+ public class ST<Key,Value>
+-----------------------------------------------------------
+        ST()                       create a symbol table
+   void put(Key key, Value val     put pair into table, remove key if val == null
+  Value get(Key, key)              value paired with key
+   void delete(Key key)            remove key and value from table
+boolean contains(Key key)          is there a value for key?
+boolean isEmpty()
+    int size()
+Iterable<Key> keys()               all keys in table
+
+keys will need CompareTo method
+
+Equality
+all Java classes inherit equals()
+for x,y,z...
+
+x.equals(x)     is true
+x.equals(y)     iff y.equals(x)
+if x.equals(y) && y.equals(z) then x.equals(z)
+x.equals(null)  is false
+
+default implmn of equal()
+are the two references pointing to the same value?
+
+** but what we want are references that are pointing to objects with the same value.
+
+Default is
+x == y        "do x and y point to the same object?"
+
+**
+Implementing equals()
+needs final
+type must be Object not date
+1. OK and test references - first optimizations
+2. null test    without this crazy bugs!!!
+3. same class (another religious debate), getclass()
+4. a cast back to (date) to test your 3 fields
+
+* standard design for equals() for user defined types, see slides
+
+Best practice on equals()
+fields most likely to be different, compare first
+no need to compare fields derived from other fields
+make compareTo() consistent with equals()
+
+Symbol Table test client
+Generics syntax:
+
+public static void main(){
+  
+  ST<String, Integer> st = new ST<String, Integer>
+  for(int i = 0; !StdIn.readString(); i++){
+    String key = StdIn.readString();
+    st.put(key, i);
+  }
+
+  for(String s : st.keys())
+    StdOut.println(s + " " + st.get(s));
+}
+
+
+
+
+Ch 3.4 Has Tables
+Hash tables - separate chaining
+collisions?  linked list
+
+separate chaining chart in slides
+
+Symbol Table performance
+*constant time search!!!
+
+Collision resolution methods
+open addressing
+linear probing
+
+
+L4-2
+Binary Search Trees
+Key/value symbol tables
+
+*its a tricky implementation. A concise, recursive algorithm to put(key,value)
+same as quicksort with random input, and unique keys
+see chart of binanry search tree vs. sequential search
+
+Ordered operations in BST
+max min   easy, go left or right until null node is L/R
+floor/ceiling
+  largest key < G = floor(G)
+  have to check 3 cases
+  floor, if its to the right it is the root unless there is a node < K in right subtree
+size()  just add a counter variable and return it
+also recursive, size of L/R subtrees
+rank() 3 cases like floor
+  also recursive
+  **  usefull to follow this with an example
+  to show that the method captures the rank of any node
+
+L4-2
+Iterator    traverse left
+            equeue key root
+            traverse right
+            queue will hold all the keys
+
+Operation SUmmary for ordered symbol table
+costs are proportional to height of tree
+h is proportional to log N, *for random ordered insert*
+
+The BST supports better than binary search in an ordered array, which is slow for insertion.
+BST > Binary search for insertion operation
+
+To code up a level-order traversal, use a queue stack.
+
+Deletion
+leave the key, mark it with a tombstone
+OK for not too many deletions, low dynamics
+
+? what about replacing the tombstoned node at next insertion?
+where the insert would place it in same spot ?
+
+Delete min, same for max
+Hibbard deletion is general form
+*interesting*
+
+Now we have a fully dynamic symbol table with insert and delete
+number of nodes in tree is proportional to key value pairs
+
+A problme: by inserting and deleting a random key successively, the tree becomes unbalanced.
+height -> sqrt(N), not log N !!
+
+***
+Wow - this is an open longstanding problem:  Efficient and balanced delete in binary search trees
+
+Merge sort in place - the other open problem still not solved
+
+[see a nice summary of search tree implementations so far]
+
+
+L501
+Search trees, Left-leaning Red/Black BST, 'B-Trees'
+These are the best and currently used implementations
+
+not going to build the implementation, lots of cases.  there is a better way.
+
+KD trees
+Red Black BST implementation
+[ST summary table is done!]
+
+KD trees are great for multi-particle free calculations
+Andrew Appel, 1985, efficient program for many-body simulation.
+
+Interval Search Trees
+if you go left, if there is no intersection in the left, there is no intersection in the right.
+Node stores left endpoint, and max right endpoint in subtree
+
+Rectangle Intersection
+modified sweep line algorithm with interval search
+search is NlogN + RlogN
+
+[see summary of BST applications]
+
+KD tree is expansion of ld range search
+
+
+L6
+Hash tables
+[see chart of symbol table operations]
+"can we do better?  yes!"  for non-ordered operators
+
+Hash the key down to an integer array index
+
+1. compute hash
+2. equality test
+3. collision resolution
+
+space/time tradeoff - huge array for every key.  trivial collision with sequential search
+
+Hash(key) -> table index
+  equal likelihood, scalable computation
+
+for strings, etc Java hash functions are good
+
+all Java classes inherit hashCode() which is 32-bit
+
+x.equals(y) => x.hashCode()==y.hashCode()
+converse is not necessarily true.
+default implementation uses memory address of x of the object.
+
+
+L6
+Linear probing, Hash Tables
+an array implementation instead of a linked list
+
+it works well, with the size of the array >> # of keys
+it needs empty spots to separate clusters
+
+Hash -> index integer for array, store the key at nearby index
+
+array resizing is needed if > 1/2 empty
+
+ugly cast, can't have array of generics
+
+Knuth made analysis of performance dependent on alpha % full
+
+[See table ]
+constant time search hit and delete/insert
+
+L6
+Hash table "war stories"  ch. 3.4
+cost of computing hash on long key can exceed the cost of search in a BST
+
+Java 1.1 tried to take every 8th character. But it didn't work.
+##URLs were "pre-hash" colliding on the selection of key characters for the URL.
+you need all the data in the key to compute the hash
+
+so with high hashing costs a BST structure may serve better for your symbol table.
+
+if you need gauranteed performance, the uniform hashing assumption can trip you up.  Better off with BST when gaurantee is neededd.
+
+
+####DDOS and file exploits can attack this weaknessd.
+(Alogrithmic complexity attack)
+Base 31 hashcode in Java API
+Aa -> 2112
+BB -> 2112
+
+combos can create large collision groups
+
+bottom line: hash tables perform better but have some weaknesses.
+
+
+####Security of one-way hash functions
+too expensive for symbol table
+
+separate chaining vs. linear probing chart
+
+chaining:
+easier delete
+less sensitive to clustering
+
+linear probing:
+less wasted space
+better cache performance
+
+Excercize: how to delete.  how to resize
+
+##Hash Table vs. BST
+simpler code if you don't have to write hash function
+no alternative for unordered keys (ie no comparator)
+more system support in Java
+
+BST
+stronger gaurantee of performance
+easier compareTo implementation
+
+Java includes both
+
+
+L6
+Applications and examples
+
+Sets
+nice toy excercize to filter text using sets
+
+Dictionary lookup (key value for either attribute)
+lookup CSV (file, IP, url)
+switch key-value roles, new symbol table needed
+
+*try this it looks fun*
+very useful
+very small amout of code based on symbol table application that gives us a dictionary function
+
+unbalanced BST has slow insert and lookup if keys are sorted.
+
+user defined data types
+
+for double int, interesting, count to 64 bit
+
+Strings:
+_Horner's Rule_
+uses all characters of the string
+strings are immutable
+
+Implementing your own hash code on data type
+use all the data
+multiply small prime, add hashCode of strings and prime
+31x+y
+
+*cool*
+hashCode() of "polygenelubricants" is -2^31
+probability is 1:1 billion
+
+Birthday problem: how many hashes before a collision?
+~ sqrt(pi*M/2)
+
+coupon collector:
+every slot filled >= 1 hash after ~MlogM hashes
+
+load balancing:
+after M hashes, most loaded bin has BigTheta(logM/log logM balls)
+

@@ -10,3 +10,12 @@
 
 # virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
 hs_err_pid*
+
+# exclude these non-essentials
+AlgsI/percolation
+bin
+checkstyle-5.5
+findbugs-2.0.3
+# algs-data/ 		has a .gitignore for all files, nice to know directory was there
+# algs-jar/ 		same deal, you'll need this if you clone the repo elsewhere
+
