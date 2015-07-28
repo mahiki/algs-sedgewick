@@ -1,9 +1,11 @@
-	public class Percolation {
-   public Percolation(int N)               // create N-by-N grid, with all sites blocked
-   public void open(int i, int j)          // open site (row i, column j) if it is not open already
-   public boolean isOpen(int i, int j)     // is site (row i, column j) open?
-   public boolean isFull(int i, int j)     // is site (row i, column j) full?
-   public boolean percolates()             // does the system percolate?
+   public class Percolation
+                Percolation(int N)        create N-by-N grid, with all sites blocked
+           void open(int i, int j)        open site (row i, column j) if it is not open already
+        boolean isOpen(int i, int j)      is site (row i, column j) open?
+        boolean isFull(int i, int j)      is site (row i, column j) full?
+        boolean percolates()              does the system percolate?
+    static void main(String[] args        test client (optional)
 
-   public static void main(String[] args   // test client (optional)
-}
+private methods
+    prviate int convert(int i, int j)     convert grid coordinate to linear component id
+  private int[] gridLocation(int k)       grid coordinates of component id
