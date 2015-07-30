@@ -1,27 +1,30 @@
 public class Percolation {
 
-   // Percolation class: fields, constructor, methods, test client
-   // use WeightedQuickUnionUF class, stdlib.jar
+//  Percolation class: fields, constructor, methods, test client
+//  use WeightedQuickUnionUF class, stdlib.jar
+//  don't catch
+//  if (i <= 0 || i > N) throw new IndexOutOfBoundsException("row index i out of bounds");
    
    private boolean[][] grid;
    private int N;
    
-   public Percolation(int N){ //constructor, nodes [1][1] to [N][N]
+   public Percolation(int N){
       
       grid = new boolean[N+1][N+1];
-      // connect[0][0] to all nodes in top row
-      // connect[N+1][N] to all nodes in bottom row grid[N]
-   }
 
-//  don't catch
-//  if (i <= 0 || i > N) throw new IndexOutOfBoundsException("row index i out of bounds");
+      WeightedQuickUnionFindUF uf = new WeightedQuickUnionFindUF(N+1);
+      
+      grid[0,0] = true;
+      grid[N+1,0] = true;  // does it matter if grid location is true or false?
+      for(int i = 1; i <= N; i++) uf.union(grid.convert(0,0), grid.convert(1,i);
+      for(int i = 1; i <= N; i++) uf.union(grid.convert(N+1,0), grid.convert(N+1,i);
+   }
 
 
    public void open(int i, int j){             // open site (row i, column j) if it is not open already
       
-      // stdRandom(N,N) if that site is open choose again
-      
       grid[i][j] = true;
+    
    }
 
    public boolean isOpen(int i, int j){       // is site (row i, column j) open?
@@ -35,11 +38,11 @@ public class Percolation {
 //   public boolean percolates();             // does the system percolate?
 
 
-   private int convert(int i, int j){         // convert grid coordinate to linear component id
+   private int convert(int i, int j){         // {i,j}  ->  {k} k:1 to N
       return (N*(i-1) + j);
    }
    
-   private int[] gridLocation(int k){         // grid coordinates of component id
+   private int[] gridLocation(int k){         // {k}  ->  {i,j} with k:1 to N
       int[] a = {k / N + 1,  ((k - 1) % N) + 1};
       return a;
    }
@@ -64,6 +67,15 @@ public class Percolation {
       for(int i = 0; i < perc.grid.length; i++){
          for(int j = 0; j < perc.grid.length; j++) System.out.print("" + perc.grid[i][j] + "\t");
          System.out.println(";");
+         
+// open random sites {1} to {N^2} stdRandom(N,N) if that site is open choose again
+// connect each site
+// test if it percolates
+
+      
+         
+      
+         
       }
    }
 
