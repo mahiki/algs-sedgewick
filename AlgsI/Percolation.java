@@ -1,42 +1,62 @@
-public class Percolation {
+import WeightedQuickUnionUF.*;
 
-//  Percolation class: fields, constructor, methods, test client
-//  use WeightedQuickUnionUF class, stdlib.jar
-//  don't catch
-//  if (i <= 0 || i > N) throw new IndexOutOfBoundsException("row index i out of bounds");
+public class Percolation {
+   //  Percolation class: fields, constructor, methods, test client
+   //  use WeightedQuickUnionUF class, stdlib.jar
    
    private boolean[][] grid;
    private int N;
+   private boolean topNode, bottomNode;
    
    public Percolation(int N){
+      if(N <= 0) throw new IllegalArgumentException("grid size argument N=" + N + "must be > 0");
       
       grid = new boolean[N+1][N+1];
+      grid[0][0] = true;
+      grid[N][0] = true;
+      topNode = grid[0][0];  // this is reference to a boolean array value
+      bottomNode = grid[N][0];
 
       WeightedQuickUnionFindUF uf = new WeightedQuickUnionFindUF(N+1);
       
-      grid[0,0] = true;
-      grid[N+1,0] = true;  // does it matter if grid location is true or false?
-      for(int i = 1; i <= N; i++) uf.union(grid.convert(0,0), grid.convert(1,i);
-      for(int i = 1; i <= N; i++) uf.union(grid.convert(N+1,0), grid.convert(N+1,i);
+      for(int i = 1; i <= N; i++){
+         uf.union(grid.convert(0,0), grid.convert(1,i));
+         uf.union(grid.convert(N,0), grid.convert(N,i));
+      }
    }
 
 
-   public void open(int i, int j){             // open site (row i, column j) if it is not open already
-      
-      grid[i][j] = true;
-    
+   public void open(int i, int j){
+      validate(i);
+      validate(j);
+
+      if(!grid[i][j]){
+         grid[i][j] = true;
+         uf.adjacentUnion(i,j);  ///////////////// need to connect all adjacents that are open
+      }
    }
 
-   public boolean isOpen(int i, int j){       // is site (row i, column j) open?
+   public boolean isOpen(int i, int j){
+      validate(i);
+      validate(j);
+   
       return grid[i][j];
    }
    
-//   public boolean isFull(int i, int j);     // is site (row i, column j) full?
-//    if grid[i][j] is connected to top node
+   public boolean isFull(int i, int j);{
+      validate(i);
+      validate(j);
+      
+      return connected(grid.convert(i,j),grid.convert(0,0));
+   }
 
+   public boolean percolates(){
+      return connected(grid.convert(N,0),grid.convert(0,0));
+   };
 
-//   public boolean percolates();             // does the system percolate?
-
+   private void adjacentUnion(int i, int j){  // this unites all valid adjacent grid sites
+   
+   }
 
    private int convert(int i, int j){         // {i,j}  ->  {k} k:1 to N
       return (N*(i-1) + j);
@@ -45,14 +65,13 @@ public class Percolation {
    private int[] gridLocation(int k){         // {k}  ->  {i,j} with k:1 to N
       int[] a = {k / N + 1,  ((k - 1) % N) + 1};
       return a;
+   } // is this needed?
+   
+
+   private void validate(int p) {
+      if (p < 1 || p > N) throw new IndexOutOfBoundsException("index " + p + " is not in [1," + N + "]");
    }
 
-/*   private void validate(int p) {            // validate that p is a valid index
-        int N = parent.length;
-        if (p < 0 || p >= N) {
-            throw new IndexOutOfBoundsException("index " + p + " is not between 0 and " + N);
-        }
-    }*/
 
 
    public static void main(String[] args){   // Test Client
