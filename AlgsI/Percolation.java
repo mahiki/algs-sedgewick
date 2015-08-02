@@ -1,23 +1,28 @@
 public class Percolation {
-   //  Percolation class: fields, constructor, methods, test client
-   //  use WeightedQuickUnionUF class, stdlib.jar
    
    private boolean[][] grid;
-   private int N;
+   private int N, topNode, bottomNode;
+   private WeightedQuickUnionUF uf;
    
    public Percolation(int N){
-      if(N <= 0) throw new IllegalArgumentException("grid size argument N=" + N + "must be > 0");
+      if(N <= 0) throw new IllegalArgumentException("grid size argument N=" + N + " must be > 0");
       
+      this.N = N;                         // assign the argument to the instance variable N
       grid = new boolean[N+1][N+1];
-      grid[0][0] = true;
-      grid[N][0] = true;
+      topNode = 0;
+      bottomNode = N*N+1;
+      StdOut.println("bottomNode: " + bottomNode);
 
-      WeightedQuickUnionUF uf = new WeightedQuickUnionUF(N+1);
-      
-      for(int i = 1; i <= N; i++){
-         uf.union(convert(0,0), convert(1,i));
-         uf.union(convert(N,0), convert(N,i));
+      uf = new WeightedQuickUnionUF(N*N+2);
+      StdOut.println("uf.count(): " + uf.count());
+      for(int h = 1; h <= N; h++){
+         uf.union(topNode,    convert(1,h));
+         uf.union(bottomNode, convert(N,h));
       }
+      StdOut.println("uf.connected(0,1): " + uf.connected(0,1));
+      StdOut.println("uf.connected(N*N,bottomNode): " + uf.connected(N*N,bottomNode));
+      StdOut.println("uf.connected(topNode,bottomNode): " + uf.connected(topNode,bottomNode));
+      StdOut.println("uf.count(): " + uf.count());
    }
 
    public void open(int i, int j){
@@ -33,34 +38,30 @@ public class Percolation {
    public boolean isOpen(int i, int j){
       validate(i);
       validate(j);
-   
       return grid[i][j];
    }
    
    public boolean isFull(int i, int j){
       validate(i);
       validate(j);
-      
-      return true;//connected(convert(i,j),convert(0,0));
+      return uf.connected(convert(i,j),topNode);
    }
 
    public boolean percolates(){
-      return true;//  connected(convert(N,0),convert(0,0));
+      return uf.connected(topNode,bottomNode);
    };
 
-   private void adjacentUnion(int i, int j){  // this unites all valid, open adjacent grid sites
-   
+   private void adjacentUnion(int i, int j){
+         
+      if(i>1 && grid[i-1][j]) uf.union(convert(i-1,j),convert(i,j));
+      if(i<N && grid[i+1][j]) uf.union(convert(i+1,j),convert(i,j));
+      if(j>1 && grid[i][j-1]) uf.union(convert(i,j-1),convert(i,j));
+      if(j<N && grid[i][j+1]) uf.union(convert(i,j+1),convert(i,j));
    }
 
-   private int convert(int i, int j){         // {i,j}  ->  {k} k:1 to N
+   private int convert(int i, int j){         // {i,j}  ->  {k} k:1 to N, {i,j > 0}
       return (N*(i-1) + j);
    }
-   
-/*   private int[] gridLocation(int k){         // {k}  ->  {i,j} with k:1 to N
-      int[] a = {k / N + 1,  ((k - 1) % N) + 1};
-      return a;
-   } // is this needed?
-*/
 
    private void validate(int p) {
       if (p < 1 || p > N) throw new IndexOutOfBoundsException("index " + p + " is not in [1," + N + "]");
@@ -69,26 +70,42 @@ public class Percolation {
 
 
    public static void main(String[] args){   // Test Client
+      int N = Integer.parseInt(args[0]);
       
-      Percolation perc = new Percolation(Integer.parseInt(args[0]));
+      Percolation perc = new Percolation(N);
       
-      for(int i = 0; i < perc.grid.length; i++)
-         System.out.println("your Percolation grid["+i+"] is size: " + perc.grid[i].length);
-   
-      System.out.println("contents of perc.grid[][]");
-      
-      for(int i = 0; i < perc.grid.length; i++){
-         for(int j = 0; j < perc.grid.length; j++) System.out.print("" + perc.grid[i][j] + "\t");
-         System.out.println(";");
+      StdOut.println("contents of perc.grid[][]");
+      for(int i = 1; i < N + 1; i++){
+         for(int j = 1; j < N + 1; j++)
+            StdOut.print("" + perc.grid[i][j] + "{" + perc.convert(i,j) + "}" + "\t");
+         System.out.println("");
       }
          
 // open random sites {1} to {N^2} stdRandom(N,N) if that site is open choose again
-// connect each site
+// connect each site    StdRandom.uniform(N)  produces [0,N) random integer #s
 // test if it percolates
          
-      StdOut.println("perc.percolates(): " + perc.percolates());
-      perc.union(0,1);
-      
-
+      StdOut.println("perc.percolates(): " +  perc.percolates());
+      String str = "X";
+      while(!perc.percolates()){
+         int iRnd = StdRandom.uniform(N)+1;
+         int jRnd = StdRandom.uniform(N)+1;
+         if(perc.isOpen(iRnd,jRnd)) continue;
+         
+         perc.open(iRnd,jRnd);
+         for(int i = 1; i<=N+1; i++) StdOut.print("_");
+         StdOut.println(" iRnd, jRnd: " + iRnd + ", " + jRnd);
+   
+         for(int i = 1; i < N + 1; i++){
+            System.out.print("|");
+            for(int j = 1; j < N + 1; j++){
+               str = perc.grid[i][j] ? " " : "X";
+               StdOut.print("" + str);
+            }
+            System.out.println("|");
+         }
+         for(int i = 1; i<=N+1; i++) StdOut.print("-");
+         StdOut.println("\nperc.percolates(): " +  perc.percolates()+"\n");
+      }
    }
 }
