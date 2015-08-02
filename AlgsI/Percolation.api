@@ -7,5 +7,4 @@
     static void main(String[] args        test client (optional)
 
 private methods
-    prviate int convert(int i, int j)     convert grid coordinate to linear component id
-  private int[] gridLocation(int k)       grid coordinates of component id 1 to N
+    private int convert(int i, int j)     convert grid coordinate to linear component id
