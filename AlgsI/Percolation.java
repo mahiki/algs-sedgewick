@@ -4,7 +4,6 @@
  *  Dependencies: StdIn.java StdOut.java WeightedQuickUnionUF.java
  *
  *  Percolation test of NxN grid
- *
  ****************************************************************************/
 
 /**
@@ -97,7 +96,7 @@ public class Percolation {
 
 
 
-   public static void main(String[] args){// Test Client
+   public static void main(String[] args){
 
       int N = Integer.parseInt(args[0]);
       double p = 1.0;
