@@ -20,14 +20,11 @@
  *      int N                 grid size is NxN
  *      int T                 number of Percolation trials
  * double[] x                 percentage open/total at percolation
- *   double mu                sample mean of x
- *   double sigma             standard deviation of trial percentages
  */
 
 public class PercolationStats {
    private int T;
    private double[] x;
-   private double mu, sigma;
    
    public PercolationStats(int N, int T){ // perform T independent experiments on an N-by-N grid
       if(N <= 0 || T <= 0) throw new IllegalArgumentException(
@@ -60,22 +57,22 @@ public class PercolationStats {
       for(int i = 0; i < T; i++){
          tempMean += x[i];
       }
-      return mu = tempMean/T;
+      return tempMean/T;
    }
    
    public double stddev(){
       double temp = 0;
       for(int i = 0; i < T; i++){
-         temp += (x[i] - mu)*(x[i] - mu);
+         temp += (x[i] - mean())*(x[i] - mean());
       }
-      return sigma = Math.sqrt(temp/(T-1));
+      return Math.sqrt(temp/(T-1));
    }
    public double confidenceLo(){
-      return (mu - 1.96*sigma/Math.sqrt(T));
+      return (mean() - 1.96*stddev()/Math.sqrt(T));
    }
    
    public double confidenceHi(){
-      return (mu + 1.96*sigma/Math.sqrt(T));
+      return (mean() + 1.96*stddev()/Math.sqrt(T));
    }
 
    public static void main(String[] args){
