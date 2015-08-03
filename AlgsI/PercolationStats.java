@@ -6,7 +6,6 @@
  *
  *  Percolation test series of NxN grid develops estimate of probability p
  ****************************************************************************/
-
 /**
  * API
  *  class PercolationStats
@@ -29,7 +28,6 @@ public class PercolationStats {
    private int T;
    private double[] x;
    private double mu, sigma;
-   private Percolation perc;
    
    public PercolationStats(int N, int T){ // perform T independent experiments on an N-by-N grid
       if(N <= 0 || T <= 0) throw new IllegalArgumentException(
@@ -37,7 +35,7 @@ public class PercolationStats {
 
       this.T = T;
       x = new double[T];
-      
+      Percolation perc;
       int openCells;
       int iRnd = 0;
       int jRnd = 0;

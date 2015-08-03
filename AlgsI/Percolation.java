@@ -4,9 +4,7 @@
  *  Dependencies: StdIn.java StdOut.java WeightedQuickUnionUF.java
  *
  *  Percolation test of NxN grid
- ****************************************************************************/
-
-/**
+ ****************************************************************************
  *  an instance of Percolation will create an NxN grid and a union-find
  *  array data structure object.  The client can select grid elements and
  *  open them, which connects to any adjacent open cells.  The client can test
