@@ -70,7 +70,7 @@ public class Percolation {
    public boolean isFull(int i, int j){
       validate(i);
       validate(j);
-      return uf.connected(convert(i,j),topNode);
+      return isOpen(i,j) && uf.connected(convert(i,j),topNode);
    }
 
    public boolean percolates(){
@@ -79,10 +79,10 @@ public class Percolation {
 
    private void adjacentUnion(int i, int j){
          
-      if(i>1 && grid[i-1][j]) uf.union(convert(i-1,j),convert(i,j));
-      if(i<N && grid[i+1][j]) uf.union(convert(i+1,j),convert(i,j));
-      if(j>1 && grid[i][j-1]) uf.union(convert(i,j-1),convert(i,j));
-      if(j<N && grid[i][j+1]) uf.union(convert(i,j+1),convert(i,j));
+      if(i > 1 && grid[i-1][j]) uf.union(convert(i-1,j),convert(i,j));
+      if(i < N && grid[i+1][j]) uf.union(convert(i+1,j),convert(i,j));
+      if(j > 1 && grid[i][j-1]) uf.union(convert(i,j-1),convert(i,j));
+      if(j < N && grid[i][j+1]) uf.union(convert(i,j+1),convert(i,j));
    }
 
    private int convert(int i, int j){  // {i,j}  ->  {k} k:1 to N, {i,j > 0}
@@ -93,7 +93,6 @@ public class Percolation {
       if (p < 1 || p > N) throw new IndexOutOfBoundsException(
             "index " + p + " is not in [1," + N + "]");
    }
-
 
 
    public static void main(String[] args){

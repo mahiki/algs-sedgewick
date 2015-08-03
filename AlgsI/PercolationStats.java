@@ -26,7 +26,7 @@
  */
 
 public class PercolationStats {
-   private int N,T;
+   private int T;
    private double[] x;
    private double mu, sigma;
    private Percolation perc;
@@ -35,7 +35,6 @@ public class PercolationStats {
       if(N <= 0 || T <= 0) throw new IllegalArgumentException(
             "Arguments N,T:" + N + "," + T + " must be > 0");
 
-      this.N = N;
       this.T = T;
       x = new double[T];
       
@@ -92,5 +91,6 @@ public class PercolationStats {
       StdOut.println("95% confidence interval\t= "
                + ps.confidenceLo() + "," + ps.confidenceHi() + "\n");
    }
-   
 }
+
+// still a memory problem, perc instance should be kept local.  fine!
