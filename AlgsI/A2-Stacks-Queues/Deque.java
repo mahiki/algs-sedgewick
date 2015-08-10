@@ -16,7 +16,9 @@
  *          Item removeLast()          remove and return the item from the end
  *Iterator<Item> iterator()            return an iterator over items in order from front to end
  *
+ *  see java.lang.Iterable and java.util.Iterator
  *  @author Merlin Robinson
+ *
  */
 
 import java.util.Iterator;
@@ -86,60 +88,41 @@ public class Deque<Item> implements Iterable<Item> {
       return item;
    }
 
-   public Iterator<Item> iterator()         // return an iterator over items in order from front to end
-
-
-   public static void main(String[] args) {
-      Deque deck = new Deque();
-    
-      while (!StdIn.isEmpty()) {
-         String s = StdIn.readString();
-      
-         if (s.equals("-")) StdOut.print(stack.pop());
-         else stack.push(s);
-      }
-   }
-}
-
-/*
-deque operation in constant worst-case time
-space proportional to the number of items currently in the deque.
-iterator implementation must support each operation (including construction) in constant worst-case time
-
-public interface Iterable<Item> {
- Iterator<Item> iterator();
-}
-
-public interface Iterator<Item> {
- boolean hasNext();
- Item next();
-}
-*/
-
    public Iterator<Item> iterator() { return new ListIterator(); }
    
    private class ListIterator implements Iterator<Item> {
       private Node current = first;
 
       public boolean hasNext() { return current != null; }
-      public void remove() { throw new UnsupportedOperationException("iterator.remove() not supported");  }
+    
+      public void remove() { throw new UnsupportedOperationException("remove() not supported");  }
       
       public Item next() {
-         if(current.next == null) throw new NoSuchElementException("no element to call next()");
+         if(!hasNext()) throw new NoSuchElementException("no element to call next()");
+
          Item item = current.item;
          current = current.next;
          return item;
       }
    }
 
-/*
-UNIT TEST SUGGESTIONS
-if you call addFirst() with the numbers 1 through N in ascending order, then call removeLast() N times, you should see the numbers 1 through N in ascending order.
 
-Arguably even better are randomized unit tests (which we employ heavily in our correctness testing). We recommend that you create a client class with a name like TestDeque, where each unit test is a method in this class. Don't forget to test your iterator.
 
-One very common bug is for something to go wrong when your data structure goes from non-empty to empty and then back to non-empty.
+   public static void main(String[] args) {
 
-Make sure to test that multiple iterators can be used simultaneously. You can test this with a nested foreach loop. The iterators should operate independently of one another.
-*/
- 
+      Deque<String> deck = new Deque<>();
+    
+      while (!StdIn.isEmpty()) {
+         String s = StdIn.readString();
+      
+         if (!s.isEmpty()) {
+            
+            if(s.equals("-")) StdOut.print(deck.removeFirst() + " ");
+            else deck.addFirst(s);
+         }
+      }
+      
+      StdOut.println("   ( " + deck.size() + " left on stack )");
+   }
+}
+   

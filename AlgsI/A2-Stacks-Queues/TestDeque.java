@@ -27,3 +27,25 @@ public class TestDeque {
    
    
 }
+
+
+/*
+UNIT TEST SUGGESTIONS
+if you call addFirst() with the numbers 1 through N in ascending order, then call removeLast() N times, you should see the numbers 1 through N in ascending order.
+
+Arguably even better are randomized unit tests (which we employ heavily in our correctness testing). We recommend that you create a client class with a name like TestDeque, where each unit test is a method in this class. Don't forget to test your iterator.
+
+One very common bug is for something to go wrong when your data structure goes from non-empty to empty and then back to non-empty.
+
+Make sure to test that multiple iterators can be used simultaneously. You can test this with a nested foreach loop. The iterators should operate independently of one another.
+
+1.
+% more tobe.txt
+ to be or not to - be - - that - - - is
+% java LinkedStack < tobe.txt
+ to be not that or be (2 left on stack)
+>>checks!
+
+
+*/
+ 
