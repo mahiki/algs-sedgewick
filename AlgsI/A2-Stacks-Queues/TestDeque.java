@@ -138,6 +138,32 @@ public class TestDeque {
       StdOut.println("expected: 1 to 5 ascending order, x2, ( 0 left in deque )");
       StdOut.println("testFIFO2 complete ----------------------------------------\n");
    }
+   
+   public static void testIterator() {
+      
+      Deque<String> deck = new Deque<>();
+      int count = 0;
+      String str = "";
+      
+      for(int i = 1; i < 6; i++){
+         deck.addFirst("" + i);
+      }
+      
+      for(String s : deck){
+         count++;
+         str += s;
+         str += " ";
+      }
+      
+      StdOut.println("testIterator begin:");
+      StdOut.println("deck.size():\t" + deck.size() + "\titerator count:\t" + count);
+      StdOut.println("iterator contents (space separated):\t" + str);
+      StdOut.println("deque all five elements:");
+      for(int i = 1; i < 6; i++) StdOut.println("" + deck.removeLast());
+      StdOut.println("expected: same result by both methods");
+      StdOut.println("testIterator complete ----------------------------------------\n");
+      
+   }
 
    public static void main(String[] args) {
       testStackCL();
@@ -146,6 +172,7 @@ public class TestDeque {
       testLIFO2();
       testFIFO();
       testFIFO2();
+      testIterator();
    }
 }
 
@@ -158,5 +185,6 @@ testLIFO       read from file, output all, reload, output all, addFirst removeFi
 testLIFO2      same, using addLast removeLast
 testFIFO       read from file, output all, reload, output all, addFirst removeLast
 testFIFO2      same, using addLast removeFirst
+testIterator   see if foreach statement works
 */
  
