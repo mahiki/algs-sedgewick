@@ -8,9 +8,14 @@
  *  API
  *  public class TestDeque
  *               Deque()<Item>         construct an empty deque
- *          void testFIFO()            runs through sample inputs on addFirst(), removeFirst()
- *          void testToBe()            the original LinkedStack.java test
- *
+ *          void testStackCL    command line testing: item, -, + to quit
+ *          void testQueueCL    command line testing: item, -, + to quit
+ *          void testLIFO       read from file, output all, reload, output all, addFirst removeFirst
+ *          void testLIFO2      same, using addLast removeLast
+ *          void testFIFO       read from file, output all, reload, output all, addFirst removeLast
+ *          void testFIFO2      same, using addLast removeFirst
+ *          void testIterator   see if foreach statement works
+ *          void testSimulIter  run nested foreach loop to see if iterators are independent
  *  @author Merlin Robinson
  */
 
@@ -175,16 +180,3 @@ public class TestDeque {
       testIterator();
    }
 }
-
-/*
-Make sure to test that multiple iterators can be used simultaneously. You can test this with a nested foreach loop. The iterators should operate independently of one another.
-
-testStackCL    command line testing: item, -, + to quit
-testQueueCL    command line testing: item, -, + to quit
-testLIFO       read from file, output all, reload, output all, addFirst removeFirst
-testLIFO2      same, using addLast removeLast
-testFIFO       read from file, output all, reload, output all, addFirst removeLast
-testFIFO2      same, using addLast removeFirst
-testIterator   see if foreach statement works
-*/
- 
