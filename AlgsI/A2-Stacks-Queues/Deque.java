@@ -5,16 +5,16 @@
  *
  *  A double-ended queue, "deck".
  ****************************************************************************
- *  API
- *  public class Deque<Item> implements Iterable<Item>
- *               Deque()               construct an empty deque
- *       boolean isEmpty()             is the deque empty?
- *           int size()                return the number of items on the deque
- *          void addFirst(Item item)   add the item to the front
- *          void addLast(Item item)    add the item to the end
- *          Item removeFirst()         remove and return the item from the front
- *          Item removeLast()          remove and return the item from the end
- *Iterator<Item> iterator()            return an iterator over items in order from front to end
+ *   API
+ *   public class Deque<Item> implements Iterable<Item>
+ *                Deque()               construct an empty deque
+ *        boolean isEmpty()             is the deque empty?
+ *            int size()                return the number of items on the deque
+ *           void addFirst(Item item)   add the item to the front
+ *           void addLast(Item item)    add the item to the end
+ *           Item removeFirst()         remove and return the item from the front
+ *           Item removeLast()          remove and return the item from the end
+ * Iterator<Item> iterator()            return an iterator over items in order from front to end
  *
  *  see java.lang.Iterable and java.util.Iterator
  *  @author Merlin Robinson
@@ -29,17 +29,17 @@ public class Deque<Item> implements Iterable<Item> {
    private int N;
    private Node first, last;
    
-   public Deque() {
-      first = null;
-      last = first;
-      N = 0;
-   }
-
    private class Node {
     Item item;
     Node next;
    }
    
+   public Deque() {
+      first = null;
+      last = null;
+      N = 0;
+   }
+
    public boolean isEmpty() {
       return first == null;
    }
@@ -64,14 +64,15 @@ public class Deque<Item> implements Iterable<Item> {
       Node oldlast = last;
       last = new Node();
       last.item = item;
-      oldlast.next = last;
       last.next = null;
+      if (isEmpty()) first = last;
+      else           oldlast.next = last;
       N++;
-      
+
    }
 
    public Item removeFirst() {
-      if (isEmpty()) throw new NoSuchElementException("stack underflow");
+      if (isEmpty()) throw new NoSuchElementException("deque underflow");
       
       Item item = first.item;
       first = first.next;
@@ -80,7 +81,7 @@ public class Deque<Item> implements Iterable<Item> {
    }
    
    public Item removeLast() {
-      if (isEmpty()) throw new NoSuchElementException("stack underflow");
+      if (isEmpty()) throw new NoSuchElementException("deque underflow");
    
       Item item = last.item;
       last = null;
@@ -106,10 +107,8 @@ public class Deque<Item> implements Iterable<Item> {
       }
    }
 
-
-
    public static void main(String[] args) {
-
+/*
       Deque<String> deck = new Deque<>();
     
       while (!StdIn.isEmpty()) {
@@ -118,11 +117,12 @@ public class Deque<Item> implements Iterable<Item> {
          if (!s.isEmpty()) {
             
             if(s.equals("-")) StdOut.print(deck.removeFirst() + " ");
+            else if(s.equals("+")) StdOut.print("size is: " + deck.size() + " ");
+            else if(s.equals("/")) brea;
             else deck.addFirst(s);
          }
       }
-      
-      StdOut.println("   ( " + deck.size() + " left on stack )");
-   }
+     StdOut.println("   ( " + deck.size() + " left on stack )");
+*/   }
+     
 }
-   

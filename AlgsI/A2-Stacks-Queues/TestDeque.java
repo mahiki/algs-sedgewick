@@ -1,19 +1,15 @@
 /***************************************************************************
  *  Compilation:  javac TestDeque.java
- *  Execution:    java Deque
- *  Dependencies: StdIn.java StdOut.java
+ *  Execution:    java TestDeque
+ *  Dependencies: StdIn.java StdOut.java Deque.java
  *
  *  A test client for the Deque class
  ****************************************************************************
  *  API
  *  public class TestDeque
- *               Deque()               construct an empty deque
- *       boolean isEmpty()             is the deque empty?
- *           int size()                return the number of items on the deque
- *          void addFirst(Item item)   add the item to the front
- *          void addLast(Item item)    add the item to the end
- *          Item removeFirst()         remove and return the item from the front
- *          Item removeLast()          remove and return the item from the end
+ *               Deque()<Item>         construct an empty deque
+ *          void testFIFO()            runs through sample inputs on addFirst(), removeFirst()
+ *          void testToBe()            the original LinkedStack.java test
  *
  *  @author Merlin Robinson
  */
@@ -22,30 +18,80 @@ import java.util.Iterator;
 import java.util.NoSuchElementException;
 
 public class TestDeque {
+
+   private TestDeque() {/*don't instantiate*/ }
+
+   public static void testLifoCL() {
+    
+      Deque<String> deck = new Deque<>();
+    
+      StdOut.println("testLifoCL --- enter items to push, '-' for pop, '+' for quit:");
+    
+      while (!StdIn.isEmpty()) {
+         String item = StdIn.readString();
+         if (item.equals("+")) break;
+         if (!item.equals("-")) deck.addFirst(item);
+         else if (!deck.isEmpty()) StdOut.print(deck.removeFirst() + " ");
+      }
+      
+      StdOut.println("\t( " + deck.size() + " left in deque )");
+      StdOut.println("testLifoCL complete ----------------------------------------\n");
+   }
    
-   
-   
-   
+   public static void testLIFO() {
+      
+      Deque<String> deck = new Deque<>();
+      
+      try { In in = new In("./test/num-1-to-5.txt");
+
+         while (!in.isEmpty()) {
+             String s = in.readLine();
+             StdOut.println("\t\tin:\t" + s);
+            if(s.equals("-")) StdOut.print(deck.removeFirst() + " ");
+            else deck.addFirst(s);
+         }
+         
+         StdOut.println("\t( " + deck.size() + " left on deck )");
+         
+      } catch (Exception e) { StdOut.println(e); }
+      
+      StdOut.println("expected: 5 to 1 descending order, x2, ( 0 left in deque )");
+      StdOut.println("testLIFO complete ----------------------------------------\n");
+   }
+
+   public static void testFIFO() {
+      
+      Deque<String> deck = new Deque<>();
+      
+      try { In in = new In("./test/num-1-to-5.txt");
+
+         while (!in.isEmpty()) {
+             String s = in.readLine();
+             StdOut.println("\t\tin:\t" + s);
+            if(s.equals("-")) StdOut.print(deck.removeLast() + " ");
+            else deck.addFirst(s);
+         }
+         
+         StdOut.println("\t( " + deck.size() + " left on deck )");
+         
+      } catch (Exception e) { StdOut.println(e); }
+      
+      StdOut.println("expected: 1 to 5 ascending order, x2, ( 0 left in deque )");
+      StdOut.println("testFIFO complete ----------------------------------------\n");
+   }
+
+   public static void main(String[] args) {
+      testLifoCL();
+      testLIFO();
+      testFIFO();
+   }
 }
 
-
 /*
-UNIT TEST SUGGESTIONS
-if you call addFirst() with the numbers 1 through N in ascending order, then call removeLast() N times, you should see the numbers 1 through N in ascending order.
-
-Arguably even better are randomized unit tests (which we employ heavily in our correctness testing). We recommend that you create a client class with a name like TestDeque, where each unit test is a method in this class. Don't forget to test your iterator.
-
-One very common bug is for something to go wrong when your data structure goes from non-empty to empty and then back to non-empty.
-
 Make sure to test that multiple iterators can be used simultaneously. You can test this with a nested foreach loop. The iterators should operate independently of one another.
 
-1.
-% more tobe.txt
- to be or not to - be - - that - - - is
-% java LinkedStack < tobe.txt
- to be not that or be (2 left on stack)
->>checks!
-
-
+1. testLifoCL  command line testing: item, -, + to quit
+2. testLIFO    read from file, output all, reload, output all
+3. testFIFO    read from file, output all, reload, output all
 */
  
