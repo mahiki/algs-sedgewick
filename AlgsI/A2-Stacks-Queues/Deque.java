@@ -32,6 +32,7 @@ public class Deque<Item> implements Iterable<Item> {
    private class Node {
     Item item;
     Node next;
+    Node prev;
    }
    
    public Deque() {
@@ -49,24 +50,28 @@ public class Deque<Item> implements Iterable<Item> {
    }
    
    public void addFirst(Item item) {
-      if(item == null) throw new NullPointerException("pushing null");
+      if(item == null) throw new NullPointerException("pushing null to first");
       
       Node oldfirst = first;
       first = new Node();
       first.item = item;
       first.next = oldfirst;
+      first.prev = null;
+      if (last == null) last = first;
+      if (oldfirst != null) oldfirst.prev = first;
       N++;
    }
       
    public void addLast(Item item) {
-      if(item == null) throw new NullPointerException("pushing null");
+      if(item == null) throw new NullPointerException("pushing null to last");
       
       Node oldlast = last;
       last = new Node();
       last.item = item;
       last.next = null;
-      if (isEmpty()) first = last;
-      else           oldlast.next = last;
+      last.prev = oldlast;
+      if (first == null) first = last;
+      if (oldlast != null) oldlast.next = last;
       N++;
 
    }
@@ -76,6 +81,7 @@ public class Deque<Item> implements Iterable<Item> {
       
       Item item = first.item;
       first = first.next;
+      if (first != null) first.prev = null;
       N--;
       return item;
    }
@@ -84,7 +90,8 @@ public class Deque<Item> implements Iterable<Item> {
       if (isEmpty()) throw new NoSuchElementException("deque underflow");
    
       Item item = last.item;
-      last = null;
+      last = last.prev;
+      if (last != null) last.next = null;
       N--;
       return item;
    }
@@ -108,21 +115,7 @@ public class Deque<Item> implements Iterable<Item> {
    }
 
    public static void main(String[] args) {
-/*
-      Deque<String> deck = new Deque<>();
-    
-      while (!StdIn.isEmpty()) {
-         String s = StdIn.readString();
-      
-         if (!s.isEmpty()) {
-            
-            if(s.equals("-")) StdOut.print(deck.removeFirst() + " ");
-            else if(s.equals("+")) StdOut.print("size is: " + deck.size() + " ");
-            else if(s.equals("/")) brea;
-            else deck.addFirst(s);
-         }
-      }
-     StdOut.println("   ( " + deck.size() + " left on stack )");
-*/   }
+   /*    test client TestDeque.java    */
+   }
      
 }
