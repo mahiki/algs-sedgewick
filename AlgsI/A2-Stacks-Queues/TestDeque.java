@@ -165,7 +165,7 @@ public class TestDeque {
       StdOut.println("iterator contents (space separated):\t" + str);
       StdOut.println("deque all five elements:");
       for(int i = 1; i < 6; i++) StdOut.println("" + deck.removeLast());
-      StdOut.println("expected: same result by both methods");
+      StdOut.println("expected: same result by both methods (reverse order)");
       StdOut.println("testIterator complete ----------------------------------------\n");
       
    }

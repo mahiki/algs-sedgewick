@@ -27,17 +27,23 @@ public class TestRandQueue {
     
       RandomizedQueue<String> randQ = new RandomizedQueue<>();
     
-      StdOut.println("testQueueCL --- enter items to enqueue, '-' for dequeue, '+' for quit:");
+      StdOut.println("testQueueCL ---\n"
+         + "\tenter items to enqueue, '-' for dequeue, '=' for size '+' for quit:");
     
       while (!StdIn.isEmpty()) {
          String item = StdIn.readString();
          if (item.equals("+")) break;
-         if (!item.equals("-")) randQ.enqueue(item);
-         else if (!randQ.isEmpty()) StdOut.print(randQ.dequeue() + " ");
+         else if (item.equals("=")) StdOut.println("\t" + randQ.size());
+         else if (item.equals("-")) {
+            if(!randQ.isEmpty()) StdOut.println("\t" + randQ.dequeue());
+            else StdOut.println("\tisEmpty() = " + randQ.isEmpty());
+         }
+         else randQ.enqueue(item);
       }
       
-      StdOut.println("\t( " + randQ.size() + " left in queue )");
-      StdOut.println("\t( " + randQ.sample() + " random sample )");
+      StdOut.println("\t( " + randQ.size() + " : left in queue )");
+      if(!randQ.isEmpty()) StdOut.println("\t( " + randQ.sample() + " : random sample )");
+      else StdOut.println("\tisEmpty() = " + randQ.isEmpty());
       StdOut.println("testQueueCL complete ----------------------------------------\n");
    }
 
@@ -47,7 +53,7 @@ public class TestRandQueue {
       int count = 0;
       String str = "";
       
-      for(int i = 1; i < 6; i++){
+      for(int i = 1; i < 21; i++){
          randQ.enqueue("" + i);
       }
       
@@ -60,10 +66,10 @@ public class TestRandQueue {
       StdOut.println("testIterator begin:");
       StdOut.println("randQ.size():\t" + randQ.size() + "\titerator count:\t" + count);
       StdOut.println("iterator contents (space separated):\t" + str);
-      StdOut.println("deque all five elements:");
-      for(int i = 1; i < 6; i++) StdOut.println("" + randQ.dequeue());
+      StdOut.println("dequeue all five elements:");
+      for(int i = 1; i < 21; i++) StdOut.println("" + randQ.dequeue());
       StdOut.println("\t( " + randQ.size() + " left in queue )");
-      StdOut.println("expected: same result by both methods");
+      StdOut.println("expected: all elements, independent random order, 0 left");
       StdOut.println("testIterator complete ----------------------------------------\n");
       
    }

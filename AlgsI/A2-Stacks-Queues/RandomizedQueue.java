@@ -45,14 +45,14 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
       if (last == q.length) last = 0;
       N++;
    }
-  
+
    public Item dequeue(){
       
       if (isEmpty()) throw new NoSuchElementException("Queue underflow");
-      int rnd = StdRandom.uniform(N);
+      int randex = (StdRandom.uniform(N) + first) % q.length;
       
-      Item tmp = q[(rnd + first) % q.length];
-      q[rnd] = q[first];
+      Item tmp = q[randex];
+      q[randex] = q[first];
       q[first] = tmp;                                    // swap
       
       Item item = q[first];
