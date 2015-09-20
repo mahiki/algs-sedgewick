@@ -4,7 +4,10 @@
  *  Dependencies: StdIn.java StdOut.java RandomizedQueue.java
  *
  *  A client that reads N strings and returns k of them at random
+ *  needs: I didn't do this yet, still need to do.
  ****************************************************************************/
+import edu.princeton.cs.algs4.StdOut;
+import edu.princeton.cs.algs4.StdIn;
 
 public class Subset {
    

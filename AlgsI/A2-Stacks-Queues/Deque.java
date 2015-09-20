@@ -20,6 +20,10 @@
  *  @author Merlin Robinson
  *
  */
+import edu.princeton.cs.algs4.StdOut;
+import edu.princeton.cs.algs4.StdIn;
+
+
 
 import java.util.Iterator;
 import java.util.NoSuchElementException;

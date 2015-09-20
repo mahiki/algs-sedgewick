@@ -1,7 +1,7 @@
 /***************************************************************************
  *  Compilation:  javac RandomizedQueue.java
  *  Execution:    java RandomizedQueue < input.txt
- *  Dependencies: StdIn.java StdOut.java
+ *  Dependencies: StdIn.java StdOut.java StdRandom.java
  *
  *  A queue that returns items at random
  ****************************************************************************
@@ -21,6 +21,10 @@
 
 import java.util.Iterator;
 import java.util.NoSuchElementException;
+import edu.princeton.cs.algs4.StdRandom;
+import edu.princeton.cs.algs4.StdOut;
+import edu.princeton.cs.algs4.StdIn;
+
 
 public class RandomizedQueue<Item> implements Iterable<Item> {
    

@@ -22,6 +22,11 @@
  * double[] x                 percentage open/total at percolation
  */
 
+import edu.princeton.cs.algs4.StdRandom;
+import edu.princeton.cs.algs4.StdStats;
+import edu.princeton.cs.algs4.WeightedQuickUnionUF;
+import edu.princeton.cs.algs4.StdOut;
+
 public class PercolationStats {
    private int T;
    private double[] x;

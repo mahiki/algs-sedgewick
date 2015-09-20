@@ -27,6 +27,11 @@
  *
  *  @author Merlin Robinson
  */
+import edu.princeton.cs.algs4.StdRandom;
+import edu.princeton.cs.algs4.StdStats;
+import edu.princeton.cs.algs4.WeightedQuickUnionUF;
+import edu.princeton.cs.algs4.StdOut;
+
 public class Percolation {
    
    private boolean[][] grid;
