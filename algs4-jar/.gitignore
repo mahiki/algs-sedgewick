@@ -1,4 +1,0 @@
-# keep this directory as a reminder of data sources,
-# but ignore all these hefty data files
-*
-!.gitignore

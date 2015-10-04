@@ -1,4 +1,6 @@
 # keep this directory as a reminder of data sources,
 # but ignore all these hefty data files
+# data source is http://algs4.cs.princeton.edu/code/algs4-data.zip
+
 *
 !.gitignore

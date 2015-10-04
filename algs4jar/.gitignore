@@ -1,0 +1,6 @@
+# keep this directory in repo as a reminder,
+# source of library files is http://algs4.cs.princeton.edu/code/algs4.jar
+# commiting library files for future reference
+*
+!.gitignore
+!.java

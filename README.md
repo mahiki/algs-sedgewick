@@ -1,6 +1,8 @@
 ## algs-sedgewick
 my repo of Robert Sedgewick's algorithms classes on Coursera
 
+[booksite on the web](http://algs4.cs.princeton.edu/home/), resources and code libraries
+
 ### topics
 each programming assigment is listed in the issues, and i `evernote`'d my lecture notes and assigment results.
 
